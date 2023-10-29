@@ -36,19 +36,16 @@ namespace RegimeRepo.WebApi.Businnes.Concrete
                 UserId = dto.UserId,
                 Fails = dto.Fails,
             };
-            var result = await _contex.Regimes.AddAsync(entity);
-            if (result.Properties.Count() <= 0)
+            await _contex.Regimes.AddAsync(entity);
+            var result = _contex.SaveChanges();
+            if (result <= 0)
             {
                 returnModel.IsSuccess = false;
-                returnModel.Message = "An Error Accured while entity adding";
+                returnModel.Message = Constants.AddErrorMessage;
                 return returnModel;
-            }
-           
-
-            _contex.SaveChanges();
-            
+            }            
             returnModel.IsSuccess = true;
-            returnModel.Message = "Successfully added";
+            returnModel.Message = Constants.SuccesfulAddMessage;
             return returnModel;
 
         }
@@ -59,14 +56,14 @@ namespace RegimeRepo.WebApi.Businnes.Concrete
             if (regime == null)
             {
                 returnModel.IsSuccess = false;
-                returnModel.Message = "Can't find an regime with given Id";
+                returnModel.Message = Constants.EntityNotFound;
                 return returnModel;
             }
             _contex.Regimes.Remove(regime);
             _contex.SaveChanges();
 
             returnModel.IsSuccess = true;
-            returnModel.Message = "Regime deleted successfully";
+            returnModel.Message = Constants.SuccesfulDelete;
 
             return returnModel;
         }
@@ -78,17 +75,17 @@ namespace RegimeRepo.WebApi.Businnes.Concrete
             if (regimes == null)
             {
                 returnModel.IsSuccess = false;
-                returnModel.Message = "There isn't any regime in database";
+                returnModel.Message = Constants.EntityNotFound;
                 return returnModel;
             }
             if (regimes.Count() == 0)
             {
                 returnModel.IsSuccess = false;
-                returnModel.Message = "There isn't any regime in database";
+                returnModel.Message = Constants.EntityNotFound;
                 return returnModel;
             }
             returnModel.IsSuccess = true;
-            returnModel.Message = "Success";
+            returnModel.Message = Constants.Succes;
             returnModel.Data = regimes;
 
             return returnModel;
@@ -104,12 +101,12 @@ namespace RegimeRepo.WebApi.Businnes.Concrete
             if (result == null)
             {
                 returnModel.IsSuccess = false;
-                returnModel.Message = "Can't find an regime with given Id";
+                returnModel.Message = Constants.EntityNotFound;
                 return returnModel;
             }
 
             returnModel.IsSuccess = true;
-            returnModel.Message = "Success";
+            returnModel.Message = Constants.Succes;
             returnModel.Data = result;
 
             return returnModel;
@@ -122,10 +119,10 @@ namespace RegimeRepo.WebApi.Businnes.Concrete
             if (r.Count <= 0)
             {
                 returnModel.IsSuccess = true;
-                returnModel.Message = "There isn't any regime in database with given ıd";
+                returnModel.Message = Constants.EntityNotFound;
             }
             returnModel.IsSuccess = true;
-            returnModel.Message = "Success";
+            returnModel.Message = Constants.Succes;
             returnModel.Data = r;
 
             return returnModel;
@@ -138,7 +135,7 @@ namespace RegimeRepo.WebApi.Businnes.Concrete
             if (entity == null)
             {
                 returnModel.IsSuccess = false;
-                returnModel.Message = "Can't find an regime with given Id";
+                returnModel.Message = Constants.EntityNotFound;
                 return returnModel;
             }
 
@@ -162,12 +159,12 @@ namespace RegimeRepo.WebApi.Businnes.Concrete
             if (result <= 0)
             {
                 returnModel.IsSuccess = false;
-                returnModel.Message = "Update failed";
+                returnModel.Message = Constants.UpdateFailMessage;
                 return returnModel;
             }
 
             returnModel.IsSuccess = true;
-            returnModel.Message = "Update successful";
+            returnModel.Message = Constants.Succes;
             return returnModel;
         }
     }
